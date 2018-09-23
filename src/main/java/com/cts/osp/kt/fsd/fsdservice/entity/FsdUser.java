@@ -2,9 +2,7 @@ package com.cts.osp.kt.fsd.fsdservice.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -18,87 +16,50 @@ public class FsdUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="USER_ID")
-	private String userId;
-
-	private String address;
-
-	@Column(name="CONTACT_NO")
-	private BigDecimal contactNo;
-
-	@Temporal(TemporalType.DATE)
-	private Date dob;
-
-	private String email;
-
-	private String firstname;
-
-	private String lastname;
+	@Column(name="USER_NAME")
+	private String username;
 
 	private String password;
+	@Transient
+	private String passwordConfirm;
 
-	//bi-directional many-to-one association to UserPolicy
+
+	/**
+	 * @return the passwordConfirm
+	 */
+	@Transient
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	/**
+	 * @param passwordConfirm the passwordConfirm to set
+	 */
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
+
+	//bi-directional many-to-one association to FsdRole
 	@OneToMany(mappedBy="fsdUser")
-	private List<UserPolicy> userPolicies;
+	private Set<FsdRole> fsdRoles;
 
 	public FsdUser() {
 	}
 
-	public String getUserId() {
-		return this.userId;
+	
+
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getAddress() {
-		return this.address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public BigDecimal getContactNo() {
-		return this.contactNo;
-	}
-
-	public void setContactNo(BigDecimal contactNo) {
-		this.contactNo = contactNo;
-	}
-
-	public Date getDob() {
-		return this.dob;
-	}
-
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-
-	public String getEmail() {
-		return this.email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFirstname() {
-		return this.firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return this.lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -109,26 +70,26 @@ public class FsdUser implements Serializable {
 		this.password = password;
 	}
 
-	public List<UserPolicy> getUserPolicies() {
-		return this.userPolicies;
+	public Set<FsdRole> getFsdRoles() {
+		return this.fsdRoles;
 	}
 
-	public void setUserPolicies(List<UserPolicy> userPolicies) {
-		this.userPolicies = userPolicies;
+	public void setFsdRoles(Set<FsdRole> fsdRoles) {
+		this.fsdRoles = fsdRoles;
 	}
 
-	public UserPolicy addUserPolicy(UserPolicy userPolicy) {
-		getUserPolicies().add(userPolicy);
-		userPolicy.setFsdUser(this);
+	public FsdRole addFsdRole(FsdRole fsdRole) {
+		getFsdRoles().add(fsdRole);
+		fsdRole.setFsdUser(this);
 
-		return userPolicy;
+		return fsdRole;
 	}
 
-	public UserPolicy removeUserPolicy(UserPolicy userPolicy) {
-		getUserPolicies().remove(userPolicy);
-		userPolicy.setFsdUser(null);
+	public FsdRole removeFsdRole(FsdRole fsdRole) {
+		getFsdRoles().remove(fsdRole);
+		fsdRole.setFsdUser(null);
 
-		return userPolicy;
+		return fsdRole;
 	}
 
 }
